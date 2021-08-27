@@ -5,7 +5,15 @@ library(xlsx)
 Year <-format(Sys.Date(), format="%Y")
 Month <- tolower(format(Sys.Date(), format="%B"))
 Day <- format(Sys.Date(), format="%d")
+    if (format(Sys.Date(), format="%A") == "Monday"){
+        Day <- as.numeric(Day)-3
+        } else if (format(Sys.Date(), format="%A") == "Sunday"){
+            Day <- as.numeric(Day)-2
+            } else {
+            Day <- as.numeric(Day)-1
+        }
 madash <- paste0("https://www.mass.gov/doc/covid-19-raw-data-",Month,"-",Day,"-",Year,"/download")
+download.file(madash, destfile = "./madata.xlsx", method="auto", mode="wb")
 madata <- read.xlsx2("./madata.xlsx",5,header=TRUE)
 madata <- subset(madata, select = -c(Positive.Total,Probable.Total,Probable.New,Estimated.active.cases))
 madata$Date  <- as.integer(madata$Date)
@@ -38,7 +46,7 @@ ui <- fluidPage(
                         "Percent of COVID+ population breaking quarantine:",
                         min = 0,
                         max = 100,
-                        value = 50,
+                        value = 20,
                         step = 1,
                         post = "%"),
             sliderInput("txrate",
