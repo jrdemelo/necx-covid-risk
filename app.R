@@ -14,7 +14,8 @@ Day <- format(Sys.Date(), format="%d")
             Day <- as.numeric(Day)-1
             }
 # downloads and parses data to get last 14 days of cases
-madash <- paste0("https://www.mass.gov/doc/covid-19-raw-data-",Month,"-",Day,"-",Year,"/download")#download.file(madash, destfile = "./madata.xlsx", method="auto", mode="wb")
+madash <- paste0("https://www.mass.gov/doc/covid-19-raw-data-",Month,"-",Day,"-",Year,"/download")
+download.file(madash, destfile = "./madata.xlsx", method="auto", mode="wb")
 madata <- read.xlsx2("./madata.xlsx",5,header=TRUE)
 madata <- subset(madata, select = -c(Positive.Total,Probable.Total,Probable.New,Estimated.active.cases))
 madata$Date  <- as.integer(madata$Date)
